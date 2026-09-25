@@ -17,6 +17,7 @@ Everything here was **measured on real Omarchy laptops** (Omarchy 4.x, Hyprland 
 | [`recipe-repo.md`](recipe-repo.md) | **The recipe repo** — one private repo per machine: an inventory file, a third-party pin table, and an install script that replays it all. The same-commit rule that keeps it honest |
 | [`update-safety.md`](update-safety.md) | **What actually gets overwritten** — `omarchy update` vs `refresh` vs `plugin update`, measured from package file lists and libalpm hooks, and the placement rules that follow |
 | [`plugin-hygiene.md`](plugin-hygiene.md) | **Third-party plugins and your own in one bar** — commit pins, namespacing, fork-vs-patch, disable-never-uninstall, build-locked native plugins, the marketplace path |
+| [`stock-first.md`](stock-first.md) | **Stock tooling before forks** — inventory what Omarchy already ships before building; the config flag (voxtype remote mode) that replaced a plugin fork, plus the E2E mic-pipeline test pattern |
 | [The recipe doctor](https://github.com/gdeyoung/praxis/blob/main/hermes/recipe-doctor.md) | The drift auditor that turns the inventory executable — lives in praxis; the pattern is fleet-generic |
 
 ## The plugins that came out of this

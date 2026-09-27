@@ -43,11 +43,33 @@ Config snapshots are copies **into** the repo of live files. The failure mode ru
 kit/
   RECIPE.md      inventory + pins + machine facts
   install.sh     ordered replay
+  manifests/     package-level restore set (generated, never hand-edited)
   hypr/          config snapshots (~/.config/hypr, shell.json)
   own/           our plugin sources (each also published standalone)
   system/        udev rules, systemd user units, root scripts
   ai/            agent-stack notes (sanitized snapshots, no secrets)
 ```
+
+### Manifests: closing the package gap
+
+The one layer a config-kit cannot replay from its own files is the package
+set. Hand-listing "the gaming stack + a few tools" in the recipe survives one
+audit and then rots. The fix is generated manifests:
+
+- `packages-native.txt` — `pacman -Qqen` (explicitly installed, repos+OPR).
+  `--needed` makes restore idempotent; anything stock already provides is
+  skipped, so it is safe to re-run on a live machine.
+- `packages-aur.txt` — `pacman -Qqem` (foreign). Restore via the AUR helper
+  **as your user, never root** — AUR builds execute PKGBUILDs.
+- `local-bin.txt` — names in `~/.local/bin`. Verification set only: those
+  scripts are deployed by their own installers; the manifest exists so the
+  doctor can flag when one disappears.
+
+Regenerate on every intentional package change and commit (`refresh-manifests.sh`),
+or the manifests become stale snapshots of the same kind the doctor hunts. The
+doctor treats *missing* manifests as drift and *stale* ones as warnings —
+stale means "someone changed packages without telling the repo," which is a
+decision to review, not an error.
 
 ## Pitfalls
 
